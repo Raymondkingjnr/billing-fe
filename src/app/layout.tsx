@@ -15,12 +15,14 @@ export const metadata: Metadata = {
   description: "strip billing test api",
 };
 
-export default function RootLayout({children,}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-      <Providers>
-      <html lang="en">
-      <body className={getLato.className}>{children}</body>
-      </html>
-      </Providers>
+    <html lang="en">
+      <body className={getLato.className}>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }
