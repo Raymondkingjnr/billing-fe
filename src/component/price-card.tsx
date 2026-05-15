@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Check } from 'lucide-react'
 
 export interface PricingCardProps {
@@ -9,6 +8,8 @@ export interface PricingCardProps {
     description: string
     interval: string
     _id: string;
+    onSubscribe?: (planId: string) => void;
+    isLoading?: boolean;
 }
 
 function formatPrice(price: number, currency: string) {
@@ -19,7 +20,17 @@ function formatPrice(price: number, currency: string) {
     }).format(price)
 }
 
-export default function PricingCard({name, price, currency, description, features, interval,}: PricingCardProps) {
+export default function PricingCard({
+    name,
+    price,
+    currency,
+    description,
+    features,
+    interval,
+    _id,
+    onSubscribe,
+    isLoading = false,
+}: PricingCardProps) {
     const formattedPrice = formatPrice(price, currency)
     const priceLabel = `/${interval}`
 
@@ -51,14 +62,17 @@ export default function PricingCard({name, price, currency, description, feature
                 <p className="text-gray-700 text-base">{description}</p>
 
                 {/* CTA */}
-                <Link
-                    href="/"
+                <button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={() => onSubscribe?.(_id)}
                     className="block w-full rounded-xl bg-gray-900 py-2 text-center text-sm font-medium text-white
             transition-colors hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2
-            focus-visible:ring-gray-900 focus-visible:ring-offset-2 shadow-lg shadow-gray-900/30"
+            focus-visible:ring-gray-900 focus-visible:ring-offset-2 shadow-lg shadow-gray-900/30
+            disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    Subscribe
-                </Link>
+                    {isLoading ? "Redirecting..." : "Subscribe"}
+                </button>
 
                 {/* Divider */}
                 <hr className="border-gray-100" />
