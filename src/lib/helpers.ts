@@ -1,5 +1,5 @@
 const SESSION_KEY = "token";
-const SESSION_DURATION = 60 * 60 * 1000;
+const SESSION_DURATION = 24 * 60 * 60 * 1000;
 const LOGIN_USER = "login_user";
 
 let sessionTimeout: number | null = null;
@@ -60,24 +60,18 @@ export const clearSessionStorage = () => {
 };
 
 export const getSessionStorage = () => {
-  if (!isBrowser()) {
-    return null;
-  }
+  if (typeof window === "undefined") return null;
 
-  const session = window.sessionStorage.getItem(SESSION_KEY);
-  if (!session) {
-    return null;
-  }
+  const session = window.localStorage.getItem(SESSION_KEY);
+  if (!session) return null;
 
   try {
-    const parsedSession = JSON.parse(session) as StoredSession;
-
-    if (parsedSession.expiresAt <= Date.now()) {
+    const parsed = JSON.parse(session) as StoredSession;
+    if (parsed.expiresAt <= Date.now()) {
       clearSessionStorage();
       return null;
     }
-
-    return parsedSession.token;
+    return parsed.token;
   } catch {
     clearSessionStorage();
     return null;
@@ -85,14 +79,12 @@ export const getSessionStorage = () => {
 };
 
 export const setSessionStorage = (token: string) => {
-  if (!isBrowser()) {
-    return;
-  }
+  if (typeof window === "undefined") return;
 
   const payload: StoredSession = {
     token,
     expiresAt: Date.now() + SESSION_DURATION,
   };
 
-  window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(payload));
+  window.localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
 };
