@@ -1,5 +1,5 @@
-import { login, signUp } from "@/api/auth-api";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { getUserData, login, signUp } from "@/api/auth-api";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 export const useLoginUser = () => {
@@ -39,5 +39,17 @@ export const useSignupUser = () => {
     onError: (error) => {
       toast.error(error instanceof Error ? error.message : "Sign up failed");
     },
+  });
+};
+
+export const useGetUser = () => {
+  return useQuery({
+    queryKey: ["user"],
+    queryFn: getUserData,
+    enabled: true,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    retry: false,
   });
 };

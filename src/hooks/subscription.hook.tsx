@@ -1,5 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
-import { getCheckoutUrl } from "@/api/subscription-api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  cancelSub,
+  getCheckoutUrl,
+  getUserSubcriptio,
+} from "@/api/subscription-api";
 import toast from "react-hot-toast";
 
 export const useCheckoutUrl = () => {
@@ -12,7 +16,34 @@ export const useCheckoutUrl = () => {
       return getCheckoutUrl(planId);
     },
     onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "Unable to start checkout");
+      toast.error(
+        error instanceof Error ? error.message : "Unable to start checkout",
+      );
+    },
+  });
+};
+
+export const useGetUserSub = () => {
+  return useQuery({
+    queryKey: ["subscription"],
+    queryFn: getUserSubcriptio,
+  });
+};
+
+export const useCancelSub = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: cancelSub,
+    onSuccess: (result) => {
+      toast.success(result.message);
+      toast.success(result.message);
+      queryClient.invalidateQueries({ queryKey: ["subscription"] });
+    },
+    onError: (error) => {
+      toast.error(
+        error instanceof Error ? error.message : "Unable to start checkout",
+      );
     },
   });
 };
