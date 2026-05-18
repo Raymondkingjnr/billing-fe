@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { SignUpParams } from "@/api/auth-api";
 import { useSignupUser } from "@/hooks/auth-hook";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
