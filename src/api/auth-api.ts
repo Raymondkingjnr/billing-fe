@@ -5,8 +5,8 @@ import {
   setSessionStorage,
 } from "@/lib/helpers";
 
-// export const baseUrl = "https://billing-api-2voh.onrender.com/api/v1";
-export const baseUrl = "http://localhost:5500/api/v1";
+export const baseUrl = "https://billing-api-2voh.onrender.com/api/v1";
+// export const baseUrl = "http://localhost:5500/api/v1";
 
 export const login = async (email: string, password: string) => {
   const response = await fetch(`${baseUrl}/auth/login`, {
