@@ -1,7 +1,5 @@
 import { getSessionStorage } from "@/lib/helpers";
-
 import { baseUrl } from "./auth-api";
-import { PricingCardProps } from "@/component/price-card";
 
 export const getCheckoutUrl = async (planId: string): Promise<CheckoutRes> => {
   const token = getSessionStorage();
